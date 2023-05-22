@@ -1,0 +1,19 @@
+Package: miBrain
+Title: Code for miBrain
+Version: 0.0.1
+Authors@R:
+    person("Benjamin", "James", , "benjames@mit.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-6228-055X"))
+Description: Code for miBrain
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports:
+    SummarizedExperiment,
+    ggplot2, ggpubr, patchwork,
+    edgeR, DESeq2, benj
+Suggests:
+    testthat (>= 3.0.0),
+Config/testthat/edition: 3
+LazyData: true
