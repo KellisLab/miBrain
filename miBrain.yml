@@ -1,0 +1,56 @@
+
+name: miBrain
+
+channels:
+  - conda-forge
+  - bioconda
+
+dependencies:
+  - conda-forge::r-base>=4.2.2
+  - conda-forge::r-devtools
+  - conda-forge::r-biocmanager
+  - conda-forge::r-matrix
+  - conda-forge::r-tidyverse
+  - conda-forge::r-readxl
+  - conda-forge::r-writexl
+  - conda-forge::r-seriation
+  - conda-forge::r-gridExtra
+  ### R plotting
+  - conda-forge::r-ggpubr
+  - conda-forge::r-ggrastr
+  - conda-forge::r-ggrepel
+  - conda-forge::r-patchwork
+  - conda-forge::r-cowplot
+  - bioconda::bioconductor-complexheatmap
+  ### python
+  - conda-forge::pip
+  - conda-forge::rpy2
+  - conda-forge::numpy>=1.21.6
+  - conda-forge::numba>=0.56.3
+  - conda-forge::pandas>=1.5.0
+  - conda-forge::python>=3.8
+  - conda-forge::numpy_groupies>=0.9.15
+  - conda-forge::requests>=2.25
+  - bioconda::geosketch>=1.2
+  - conda-forge::anndata>=0.8
+  - conda-forge::scikit-learn>=1.2.2
+  - conda-forge::tqdm>=4.3,<5.0
+  - conda-forge::plotnine
+  - conda-forge::biopython>=1.78
+  - conda-forge::seaborn
+  - conda-forge::umap-learn
+  ### DEG
+  - bioconda::bioconductor-deseq2
+  - bioconda::bioconductor-limma
+  - bioconda::bioconductor-edger
+  ### GO
+  - bioconda::bioconductor-go.db
+  - bioconda::bioconductor-do.db
+  - bioconda::bioconductor-org.hs.eg.db
+  - bioconda::bioconductor-clusterprofiler
+  ### jupyter
+  - conda-forge::jupyterlab
+  - conda-forge::nbconvert
+  - conda-forge::r-irkernel
+  - pip:
+    - git+https://github.com/ventolab/CellphoneDB.git
