@@ -1,0 +1,1 @@
+/home/benjames/bin/run_bmc_star.sh

@@ -82,13 +82,14 @@ bulk_aggregate_star <- function(df, seq.dir, extra=TRUE, ...) {
 }
 
 #' Count (from featureCounts) raw data into
-#'
-bulk_aggregate_counts <- function(samplesheet.csv, seq.dir="~/data/seq/", star.index="/net/bmc-lab5/data/kellis/group/Benjamin/ref/STAR_gencode43/") {
+#' @export
+bulk_aggregate_counts <- function(samplesheet.csv, seq.dir, star.index="/net/bmc-lab5/data/kellis/group/Benjamin/ref/STAR_gencode43/") {
     df = read.csv(samplesheet.csv, row.names=1)
-    df$geo = rownames(df)
-    return(SummarizedExperiment::cbind(lapply(split(df, df$batch), function(bf) {
-        batch.dir = paste0("~/data/seq/", bf$batch[1], "/")
-        se = bulk_aggregate_star(bf, batch.dir, index=star.index)
-        return(se)
-    })))
+    df$library_id = rownames(df)
+    all.se = SummarizedExperiment::cbind(lapply(split(df, df$batch), function(bf) {
+        batch.dir = paste0(seq.dir, "/", bf$batch[1], "/")
+        return(bulk_aggregate_star(bf, batch.dir, index=star.index))
+    }))
+    rownames(se) = make.unique(se$title)
+    return(se)
 }
