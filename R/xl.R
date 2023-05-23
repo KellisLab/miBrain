@@ -27,6 +27,7 @@ deg_load <- function(xlsx) {
         rownames(M) = af[[1]]
         return(M)
     })
+    rownames(L$deg) = L$deg$gene
     rowData=L$gene_info
     rownames(rowData) = rowData[[1]]
     rowData[[1]] = NULL
@@ -36,5 +37,5 @@ deg_load <- function(xlsx) {
     return(SummarizedExperiment::SummarizedExperiment(assays=A,
                                                       rowData=rowData,
                                                       colData=colData,
-                                                      metadata=list(comparison=comparison, case=case, control=control)))
+                                                      metadata=list(comparison=comparison, case=case, control=control, deg=L$deg)))
 }
