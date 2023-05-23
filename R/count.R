@@ -122,6 +122,7 @@ bulk_aggregate_counts <- function(samplesheet.csv, seq.dir, star.index="/net/bmc
     colnames(all.se) = make.unique(all.se$title)
     if (file.exists(as.character(gtf))) {
         all.se = se_gene_ranges(all.se, gtf=gtf)
+        SummarizedExperiment::assays(all.se)[["RPKM"]] = edgeR::rpkm(all.se, gene.length="gene_length")
     }
     return(all.se)
 }
