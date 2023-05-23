@@ -1,0 +1,54 @@
+,title,group,batch
+D21-10370,mi1,miBrain microglia,211102Tsa
+D21-10371,mi2,miBrain microglia,211102Tsa
+D21-10372,mi3,miBrain microglia,211102Tsa
+D21-10373,Mac 1,macrophage,211102Tsa
+D21-10374,Mac 2,macrophage,211102Tsa
+D21-10375,Mac 3,macrophage,211102Tsa
+D22-12828,miBrain mCh A,miBrain pericyte,221129Tsa
+D22-12829,miBrain mCh B,miBrain pericyte,221129Tsa
+D22-12830,miBrain mCh C,miBrain pericyte,221129Tsa
+D22-12831,iBBB mCh A,iBBB pericyte,221129Tsa
+D22-12832,iBBB mCh B,iBBB pericyte,221129Tsa
+D22-12833,iBBB mCh C,iBBB pericyte,221129Tsa
+D22-12834,per mCh A,pericyte,221129Tsa
+D22-12835,per mCh B,pericyte,221129Tsa
+D22-12836,per mCh C,pericyte,221129Tsa
+D23-2113,endo/fib A IL,endo/fib,230105Tsa
+D23-2114,endo/fib B IL,endo/fib,230105Tsa
+D23-2115,endo/fib C IL,endo/fib,230105Tsa
+D23-2116,miBrain A IL,miBrain BMEC,230105Tsa
+D23-2117,miBrain B IL,miBrain BMEC,230105Tsa
+D23-2118,miBrain C IL,miBrain BMEC,230105Tsa
+D23-2986,miBrain astro A,miBrain astrocyte,230207TsaA
+D23-2987,miBrain astro B,miBrain astrocyte,230207TsaA
+D23-2988,miBrain astro C,miBrain astrocyte,230207TsaA
+D23-2989,mono astro A,astrocyte,230207TsaA
+D23-2990,mono astro B,astrocyte,230207TsaA
+D23-2991,mono astro C,astrocyte,230207TsaA
+D23-3780,miBrain OPC A,miBrain OPC,230308Tsa
+D23-3781,miBrain OPC B,miBrain OPC,230308Tsa
+D23-3782,miBrain OPC C,miBrain OPC,230308Tsa
+D23-3783,OPC mono A,mono OPC,230308Tsa
+D23-3784,OPC mono B,mono OPC,230308Tsa
+D23-3785,OPC mono C,mono OPC,230308Tsa
+D23-5258,miBrain CD31+ A,miBrain BMEC,230412Tsa
+D23-5259,miBrain CD31+ B,miBrain BMEC,230412Tsa
+D23-5260,miBrain CD31+ C,miBrain BMEC,230412Tsa
+D23-5261,endos CD31+ A,endos,230412Tsa
+D23-5262,endos CD31+ B,endos,230412Tsa
+D23-5263,endos CD31+ C,endos,230412Tsa
+D23-3039,3-2 IL,miBrain Mic APOE3,230201Tsa
+D23-3064,3-1 IL,miBrain Mic APOE3,230201Tsa
+D23-3066,3-3 IL,miBrain Mic APOE3,230201Tsa
+D23-3067,3-4 IL,miBrain Mic APOE3,230201Tsa
+D23-3068,4-1 IL,miBrain Mic APOE4,230201Tsa
+D23-3069,4-2 IL,miBrain Mic APOE4,230201Tsa
+D23-3070,4-3 IL,miBrain Mic APOE4,230201Tsa
+D23-3071,4-4 IL,miBrain Mic APOE4,230201Tsa
+D23-6473,neurons A IL,neurons,230428Tsa
+D23-6474,neurons B IL,neurons,230428Tsa
+D23-6475,neurons C IL,neurons,230428Tsa
+D23-6476,miBrain neurons A IL,miBrain neurons,230428Tsa
+D23-6477,miBrain neurons B IL,miBrain neurons,230428Tsa
+D23-6478,miBrain neurons C IL,miBrain neurons,230428Tsa

@@ -1,0 +1,13 @@
+comparison,case,batch,group
+Microglia,TRUE,211102Tsa,miBrain microglia
+Microglia,FALSE,211102Tsa,macrophage
+Pericyte,TRUE,221129Tsa,miBrain pericyte
+Pericyte,FALSE,221129Tsa,pericyte
+BMEC,TRUE,230105Tsa,miBrain BMEC
+BMEC,FALSE,230412Tsa,endos
+Astrocyte,TRUE,230207TsaA,miBrain astrocyte
+Astrocyte,FALSE,230207TsaA,astrocyte
+OPC,TRUE,230308Tsa,miBrain OPC
+OPC,FALSE,230308Tsa,mono OPC
+Neuron,TRUE,230428Tsa,miBrain neurons
+Neuron,FALSE,230428Tsa,neurons
