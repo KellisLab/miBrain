@@ -99,7 +99,7 @@ bulk_aggregate_counts <- function(samplesheet.csv, seq.dir, star.index="/net/bmc
 }
 
 #' @export
-bulk_aggregate_comparison <- function(se, comparison.csv, logTMM=TRUE) {
+bulk_aggregate_comparison <- function(se, comparison.csv, logTMM=FALSE) {
     df = read.csv(comparison.csv)
     return(lapply(split(df, df$comparison), function(cf) {
         case = cf[cf$case == TRUE, c("group", "batch")]
