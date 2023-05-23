@@ -39,6 +39,9 @@ dependencies:
   - conda-forge::biopython>=1.78
   - conda-forge::seaborn
   - conda-forge::umap-learn
+  ### genomics
+  - bioconda::bioconductor-rtracklayer
+  - bioconda::bioconductor-genomicfeatures
   ### DEG
   - bioconda::bioconductor-deseq2
   - bioconda::bioconductor-limma

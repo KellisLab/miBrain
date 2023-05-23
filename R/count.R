@@ -52,7 +52,7 @@ read_star <- function(star.prefix, index="/net/bmc-lab5/data/kellis/group/Benjam
         M = pivot(xf[xf$gene_id %in% gf$gene_id,], "gene_id", "sample", "count")
         se = SummarizedExperiment::SummarizedExperiment(list(counts=M), rowData=gf[rownames(M),], ...)
         if ("gene_name" %in% colnames(gf)) {
-            rownames(se) = make.unique(gf[rownames(se),]$gene_name, sep="-")
+            rownames(se) = var_names_make_unique(gf[rownames(se),]$gene_name)
         }
     }
     return(se)
@@ -81,13 +81,38 @@ bulk_aggregate_star <- function(df, seq.dir, extra=TRUE, ...) {
     return(se)
 }
 
+
+#' Add genomicranges of gene to SummarizedExperiment
+#' @param se SummarizedExperiment object
+#' @param gtf GTF/GFF file containing positions
+#' @param by Gene id to split on
+#' @export
+se_gene_ranges <- function(se, gtf, by="gene_name") {
+    rd = SummarizedExperiment::rowData(se)
+    gf = as.data.frame(rtracklayer::readGFF(gtf))
+    gf = gf[gf$type == "gene",]
+    rownames(gf) = var_names_make_unique(gf[[by]])
+    gr = with(gf, GenomicRanges::GRanges(seqid, ranges=IRanges::IRanges(start, end)))
+    names(gr) = rownames(gf)
+    gr = gr[var_names_make_unique(rd[[by]])]
+    for (name in colnames(rd)) {
+        S4Vectors::mcols(gr)[[name]] = rd[[name]]
+    }
+    names(gr) = rownames(rd)
+    SummarizedExperiment::rowRanges(se) = gr
+    rd$gene_length = GenomicRanges::width(gr)
+    SummarizedExperiment::rowData(se) = rd
+    return(se)
+}
+
 #' Count (from featureCounts) raw data from a spreadsheet into SummarizedExperiment object
 #' @param samplesheet.csv CSV with rownames in 1st column to be used as colData
 #' @param seq.dir Directory where batch subdir lives
 #' @param star.index STAR index passed to read_star
+#' @param gtf GTF/GFF file to add gene_length column
 #' @return SummarizedExperiment object across all batches
 #' @export
-bulk_aggregate_counts <- function(samplesheet.csv, seq.dir, star.index="/net/bmc-lab5/data/kellis/group/Benjamin/ref/STAR_gencode43/") {
+bulk_aggregate_counts <- function(samplesheet.csv, seq.dir, star.index="/net/bmc-lab5/data/kellis/group/Benjamin/ref/STAR_gencode43/", gtf="/net/bmc-lab5/data/kellis/group/Benjamin/ref/gencode.v43.annotation.gff3.gz") {
     df = read.csv(samplesheet.csv, row.names=1)
     df$library_id = rownames(df)
     all.se = do.call(SummarizedExperiment::cbind, lapply(split(df, df$batch), function(bf) {
@@ -95,6 +120,9 @@ bulk_aggregate_counts <- function(samplesheet.csv, seq.dir, star.index="/net/bmc
         return(bulk_aggregate_star(bf, batch.dir, index=star.index))
     }))
     colnames(all.se) = make.unique(all.se$title)
+    if (file.exists(as.character(gtf))) {
+        all.se = se_gene_ranges(all.se, gtf=gtf)
+    }
     return(all.se)
 }
 

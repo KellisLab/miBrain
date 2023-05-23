@@ -123,3 +123,14 @@ pivot <- function(df, row, col, val, dense=TRUE, use.last.ij=FALSE) {
         return(M)
     }
 }
+
+#' Varnames to names as in Scanpy
+#'
+#' Converts gene names to ignore
+#' duplicates so that can be made
+#' indices
+#'
+#' @param x features
+#' @return Unique features
+#' @export
+var_names_make_unique <- function(x) { make.unique(x, sep="-") }
