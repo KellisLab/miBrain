@@ -1,1 +1,58 @@
 * miBrain
+
+Software for sequencing data for [[manuscript]].
+
+** Install
+Use Anaconda to create an environment
+#+BEGIN_SRC bash
+  mamba env create --file=mibrain.yml
+#+END_SRC
+
+Then install 
+#+BEGIN_SRC bash
+  pip install .
+  make install
+#+END_SRC
+
+** Generating DEG sheets
+#+BEGIN_SRC R
+  library(miBrain)
+  seq.dir="~/data/seq"
+  if (!dir.exists("miBrain")) { dir.create("miBrain") }
+  se = bulk_aggregate_counts(system.file("extdata", "miBrain_SampleSheet.csv", package="miBrain"), seq.dir)
+  sel = bulk_aggregate_comparison(se, system.file("extdata", "miBrain_comparison.csv", package="miBrain"), logTMM=FALSE)
+  lapply(sel, function(obj) { 
+      if (obj@metadata$comparison %in% c("Pericyte", "BMEC")) {
+	  ### lower depth, use LRT+lower CPM cutoff to allow for more hypotheses
+	  deg_dump(obj, "miBrain", cpm.cutoff=10, method="LRT") 
+      } else {
+	  deg_dump(obj, "miBrain") 
+      }
+  })
+#+END_SRC
+** Generating CellphoneDB data
+For the same structure as before, with XLSX sheets in =miBrain= directory:
+#+BEGIN_SRC R
+library(miBrain)
+if (!dir.exists("miBrain/cpdb")) {
+    dir.create("miBrain/cpdb", recursive=TRUE)
+}
+dl = lapply(list.files("miBrain", pattern="xlsx$", full.names=TRUE), deg_load)
+names(dl) = sapply(dl, function(obj) { obj@metadata$comparison })
+degl = dplyr::bind_rows(lapply(dl, function(obj) { obj@metadata$deg }))
+colnames(degl) = gsub("^case$", "cluster", colnames(degl))
+del = do.call(SummarizedExperiment::cbind, dl)
+write.table(as.data.frame(SummarizedExperiment::assays(del)$counts), "miBrain/cpdb/counts.tsv", sep="\t", quote=FALSE)
+write.table(as.data.frame(SummarizedExperiment::assays(del)$TMM), "miBrain/cpdb/tmm.tsv", sep="\t", quote=FALSE)
+write.table(data.frame(Cell=colnames(del), cell_type=del$group), "miBrain/cpdb/meta.tsv", sep="\t", quote=FALSE, row.names=FALSE)
+write.table(degl[(degl$FDR < 0.05) & (degl$log2FC > 0), c("cluster", "gene")], "miBrain/cpdb/deg_FDR005_log2FC0.tsv", sep="\t", quote=FALSE, row.names=FALSE)
+write.table(degl[(degl$FDR < 0.1) & (degl$log2FC > 0), c("cluster", "gene")], "miBrain/cpdb/deg_FDR010_log2FC0.tsv", sep="\t", quote=FALSE, row.names=FALSE)
+write.table(degl[(degl$FDR < 0.05) & (degl$log2FC > 0.5), c("cluster", "gene")], "miBrain/cpdb/deg_FDR005_log2FC05.tsv", sep="\t", quote=FALSE, row.names=FALSE)
+write.table(degl[(degl$FDR < 0.1) & (degl$log2FC > 0.5), c("cluster", "gene")], "miBrain/cpdb/deg_FDR010_log2FC05.tsv", sep="\t", quote=FALSE, row.names=FALSE)
+#+END_SRC
+
+Then, to run cellphoneDB:
+#+BEGIN_SRC python
+import blah
+#+END_SRC
+
