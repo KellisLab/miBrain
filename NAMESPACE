@@ -2,5 +2,9 @@
 
 export(bulk_aggregate_counts)
 export(bulk_aggregate_star)
+export(deg.deseq2)
+export(deg.edger)
 export(pivot)
 export(read_star)
+export(se_plotPCA)
+export(se_tmm)

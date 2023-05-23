@@ -81,15 +81,19 @@ bulk_aggregate_star <- function(df, seq.dir, extra=TRUE, ...) {
     return(se)
 }
 
-#' Count (from featureCounts) raw data into
+#' Count (from featureCounts) raw data from a spreadsheet into SummarizedExperiment object
+#' @param samplesheet.csv CSV with rownames in 1st column to be used as colData
+#' @param seq.dir Directory where batch subdir lives
+#' @param star.index STAR index passed to read_star
+#' @return SummarizedExperiment object across all batches
 #' @export
 bulk_aggregate_counts <- function(samplesheet.csv, seq.dir, star.index="/net/bmc-lab5/data/kellis/group/Benjamin/ref/STAR_gencode43/") {
     df = read.csv(samplesheet.csv, row.names=1)
     df$library_id = rownames(df)
-    all.se = SummarizedExperiment::cbind(lapply(split(df, df$batch), function(bf) {
+    all.se = do.call(SummarizedExperiment::cbind, lapply(split(df, df$batch), function(bf) {
         batch.dir = paste0(seq.dir, "/", bf$batch[1], "/")
         return(bulk_aggregate_star(bf, batch.dir, index=star.index))
     }))
-    rownames(se) = make.unique(se$title)
-    return(se)
+    colnames(all.se) = make.unique(all.se$title)
+    return(all.se)
 }
