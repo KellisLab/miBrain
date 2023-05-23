@@ -17,8 +17,8 @@ Then install
 ** Generating DEG sheets
 #+BEGIN_SRC R
   library(miBrain)
-  seq.dir="~/data/seq"
-  if (!dir.exists("miBrain")) { dir.create("miBrain") }
+  seq.dir="~/data/seq" ## Directory with batchName/sampleName/featureCounts inside
+  if (!dir.exists("miBrain")) { dir.create("miBrain") } ## output directory
   se = bulk_aggregate_counts(system.file("extdata", "miBrain_SampleSheet.csv", package="miBrain"), seq.dir)
   sel = bulk_aggregate_comparison(se, system.file("extdata", "miBrain_comparison.csv", package="miBrain"), logTMM=FALSE)
   lapply(sel, function(obj) { 
@@ -56,3 +56,8 @@ Then, to run cellphoneDB:
 import blah
 #+END_SRC
 
+** Plots
+*** Heatmaps
+*** Volcano plots
+*** PCA plots
+*** Bar/boxplots
