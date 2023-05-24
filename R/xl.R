@@ -39,3 +39,36 @@ deg_load <- function(xlsx) {
                                                       colData=colData,
                                                       metadata=list(comparison=comparison, case=case, control=control, deg=L$deg)))
 }
+
+#' @export
+xl_parse_gene_list <- function(xl, mapping=c("astrocytes"="Astrocyte", "microglia"="Microglia", "oligodendrocytes"="OPC")) {
+    df = readxl::read_xlsx(xl)
+    df = df[2:nrow(df),] ## 1st row is duplicate
+    L = as.list(org.Hs.eg.db::org.Hs.egGO2ALLEGS)[
+        df[[3]]
+    ]
+    L = lapply(setNames(seq_along(L),
+                        make.unique(df[[2]])), function(i) {
+        eg = L[[i]]
+        if (!is.null(eg)) {
+            AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db,
+                                  keys=eg,
+                                  keytype="ENTREZID",
+                                  column="SYMBOL",
+                                  multiVals="first")
+        } else {
+            x=unlist(df[i, 4:ncol(df)])
+            toupper(x[!is.na(x)])
+        }
+    })
+    gf = do.call(rbind, lapply(seq_along(L), function(i) {
+        data.frame(gene=setNames(L[[i]], NULL),
+                   celltype=mapping[[
+                       df[["Cell Type"]][i]
+                   ]],
+                   go_id=df[[3]][i],
+                   go_name=names(L)[i])
+    }))
+    gf$go_id[-grep("^GO:", gf$go_id)] = NA
+    return(gf)
+}

@@ -186,4 +186,3 @@ volcano <- function(df, label="gene", title="Volcano plot of",
     g = ggplot(df, aes(x=log2FC, y=-log10(FDR), label=label)) + geom_point() + ggrepel::geom_text_repel(force=force, max.overlaps=max.overlaps) + ggpubr::theme_pubr() + ggtitle(title)
     return(g)
 }
-

@@ -6,7 +6,7 @@ channels:
   - bioconda
 
 dependencies:
-  - conda-forge::r-base>=4.2.2
+  - conda-forge::r-base==4.2.2
   - conda-forge::r-devtools
   - conda-forge::r-biocmanager
   - conda-forge::r-matrix
@@ -42,6 +42,8 @@ dependencies:
   ### genomics
   - bioconda::bioconductor-rtracklayer
   - bioconda::bioconductor-genomicfeatures
+  - bioconda::subread==1.6.2
+  - bioconda::star==2.7.9a
   ### DEG
   - bioconda::bioconductor-deseq2
   - bioconda::bioconductor-limma
