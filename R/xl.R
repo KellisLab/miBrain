@@ -28,6 +28,11 @@ deg_load <- function(xlsx) {
         return(M)
     })
     rownames(L$deg) = L$deg$gene
+    if("F" %in% colnames(L$deg)) {
+        L$deg = L$deg[order(-L$deg$F),]
+    } else if ("LR" %in% colnames(L$deg)) {
+        L$deg = L$deg[order(-L$deg$LR),]
+    }
     rowData=L$gene_info
     rownames(rowData) = rowData[[1]]
     rowData[[1]] = NULL

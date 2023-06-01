@@ -139,6 +139,14 @@ ht_triangle_split <- function(mat.ul, mat.lr, col.ul, col.lr, lwd=0, ...) {
     })
 }
 
+#' @export
+convert_pvalue_to_star <- function(pvalue) {
+    stars = rep("", length(pvalue))
+    stars[pvalue < 0.05] = "*"
+    stars[pvalue < 0.01] = "**"
+    stars[pvalue < 0.001] = "***"
+    return(setNames(stars, names(pvalue)))
+}
 #' Draw asterisks
 #' Pass cell_fun=ht_asterisks(...) to Heatmap()
 #' @param p.matrix P value matrix, unsorted
