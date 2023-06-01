@@ -46,7 +46,7 @@ deg_load <- function(xlsx) {
 }
 
 #' @export
-xl_parse_gene_list <- function(xl, mapping=c("astrocytes"="Astrocyte", "microglia"="Microglia", "oligodendrocytes"="OPC")) {
+xl_parse_gene_list <- function(xl, mapping=c("astrocytes"="Astrocyte", "microglia"="Microglia", "oligodendrocytes"="OPC", "neurons"="Neuron")) {
     df = readxl::read_xlsx(xl)
     df = df[2:nrow(df),] ## 1st row is duplicate
     L = as.list(org.Hs.eg.db::org.Hs.egGO2ALLEGS)[
