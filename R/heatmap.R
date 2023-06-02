@@ -85,6 +85,15 @@ autoHeatmap <- function(M, ux=1.5, sort=c(1, 2), method="euclidean", dimname_fon
 #' @param dpi DPI of PNG
 #' @export
 saveHeatmap <- function(ht, pltprefix, w=7, h=7, dpi=600, extra=NULL, ...) {
+    if (w > 100) {
+        dpi = 250
+    }
+    if (!is.null(attr(ht, "mib_w"))) {
+        w = attr(ht, "mib_w")
+    }
+    if (!is.null(attr(ht, "mib_h"))) {
+        h = attr(ht, "mib_h")
+    }
     pdf(paste0(pltprefix, ".pdf"), width=w, height=h)
     ComplexHeatmap::draw(ht, ht_gap=grid::unit(0.5, "mm"), ...)
     if (is.function(extra)) {
