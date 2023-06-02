@@ -3,9 +3,7 @@
 #' Plot a heatmap for the following genes.
 #' SE must be sorted by group.
 #' @export
-gene_heatmap <- function(se, genes=NULL, assay="TMM", group="group", column_title="Heatmap of genes",
-                         max.ngene=25,
-                         ux=4) {
+gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group", column_title="Heatmap of genes", ux=4) {
     ### get data
     rd = SummarizedExperiment::rowData(se)
     cd = SummarizedExperiment::colData(se)
@@ -45,13 +43,13 @@ gene_heatmap <- function(se, genes=NULL, assay="TMM", group="group", column_titl
                                            show_annotation_name=TRUE,
                                            annotation_name_gp= grid::gpar(fontsize = 3.5),
                                            annotation_name_side="right",
-                                           Expression=ComplexHeatmap::anno_barplot(t(MP),
+                                           `Mean Expression`=ComplexHeatmap::anno_barplot(t(MP),
                                                                              beside=TRUE, attach=TRUE, #baseline="min",
                                                                                         #gp = grid::gpar(fill="#CCCCCC"), 
                                                                                                 axis_param=list(gp=grid::gpar(fontsize=3), side="left"),
                                                                                                 border=FALSE, height=grid::unit(0.5, "cm")))
-    ### color
-    col = circlize::colorRamp2(c(min(-2, min(M)), 0, max(2, max(M))), c("blue", "white", "red"))
+### color
+    col = circlize::colorRamp2(c(min(-2, min(M, na.rm=TRUE)), 0, max(2, max(M, na.rm=TRUE))), c("blue", "white", "red"))
     H = autoHeatmap(M, ux=ux, dimname_fontsize=6,
                     top_annotation=ta,
                     col=col,
@@ -71,12 +69,6 @@ gene_heatmap <- function(se, genes=NULL, assay="TMM", group="group", column_titl
                    )
     w = (ncol(M) + 15) * ux * 0.03937
     h = (nrow(M) + 8) * ux * 0.03937
-    ## print(paste0("w:", w, " h:", h))
-    ## if (w < 100) {
-    ##     saveHeatmap(H, paste0("miBrain/heatmaps_go/", bn), w, h) 
-    ## } else {
-    ##     saveHeatmap(H, paste0("miBrain/heatmaps_go/", bn), w, h, dpi=250) 
-    ## }
     attr(H, "mib_w") = w
     attr(H, "mib_h") = h
     return(H)

@@ -57,7 +57,65 @@ import blah
 #+END_SRC
 
 ** Plots
-*** Heatmaps
-*** Volcano plots
 *** PCA plots
-*** Bar/boxplots
+#+BEGIN_SRC R
+  library(miBrain)
+  set_ht_opt(2)
+  dl = lapply(list.files("miBrain", pattern="^[A-Za-z]+[.]xlsx$", full.names=TRUE), deg_load)
+  sapply(dl, function(se) {
+      ct = S4Vectors::metadata(se)$comparison
+      se = se_tmm(se, log=TRUE)
+      cd = as.data.frame(SummarizedExperiment::colData(se))
+      mono = setdiff(1:nrow(cd), grep("miBrain", cd$group))
+      cd$group = gsub("^mono ", "", cd$group)
+      cd$group[mono] = paste0("monoculture ", cd$group[-grep("miBrain", cd$group)])
+      se$group = cd$group
+      se = se[,order(se$group)]
+      g = PlotPCA(se)
+      saveGGplot(g, paste0("miBrain/pca/", ct), w=3, h=3)
+      return(g)
+  })
+
+#+END_SRC
+*** Heatmaps
+**** Top 50 DEGs
+#+BEGIN_SRC R
+  library(miBrain)
+  set_ht_opt(2)
+  dl = lapply(list.files("miBrain", pattern="^[A-Za-z]+[.]xlsx$", full.names=TRUE), deg_load)
+  sapply(dl, function(se) {
+      ct = S4Vectors::metadata(se)$comparison
+      column_title = paste0("Top DEGs in ", ct)
+      se = se_tmm(se, log=TRUE)
+      cd = as.data.frame(SummarizedExperiment::colData(se))
+      mono = setdiff(1:nrow(cd), grep("miBrain", cd$group))
+      cd$group = gsub("^mono ", "", cd$group)
+      cd$group[mono] = paste0("monoculture ", cd$group[-grep("miBrain", cd$group)])
+      se$group = cd$group
+      se = se[,order(se$group)]
+      H = gene_heatmap(se, column_title=gsub("[.][0-9]+$", "", column_title))
+      saveHeatmap(H, paste0("miBrain/heatmaps_deg/", ct))
+      g = PlotPCA(se)
+      saveGGplot(g, paste0("miBrain/pca/", ct), w=3, h=3)
+      return(g)
+  })
+#+END_SRC
+**** Named DEGs
+#+BEGIN_SRC R
+  library(miBrain)
+  set_ht_opt(2)
+  df = xl_parse_gene_list(system.file("extdata", "heatmap_genes.xlsx", package="miBrain")) ## load some gene lists
+  sapply(split(df, df$go_name), function(gf) {
+    ct = unique(gf$celltype)
+    column_title=head(gf$go_name, 1)
+    se = se_tmm(dl[[ct]], log=TRUE)
+    cd = as.data.frame(SummarizedExperiment::colData(se))
+    mono = setdiff(1:nrow(cd), grep("miBrain", cd$group))
+    cd$group = gsub("^mono ", "", cd$group)
+    cd$group[mono] = paste0("monoculture ", cd$group[-grep("miBrain", cd$group)])
+    se$group = cd$group
+    se = se[,order(se$group)]
+    H = gene_heatmap(se, gene=gf$gene, column_title=gsub("[.][0-9]+$", "", column_title))
+    saveHeatmap(H, paste0("miBrain/heatmaps_go/", column_title))
+  })
+#+END_SRC

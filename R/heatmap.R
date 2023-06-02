@@ -23,7 +23,7 @@ set_ht_opt <- function(htsc=2.5) {
 
 savePlot <- function(p, pltprefix, w=7, h=7, dpi=600, ...){
   p <- substitute(p)
-  pdf(paste0(pltprefix, ".pdf"), res=dpi, width=w, height=h, units="in")
+  pdf(paste0(pltprefix, ".pdf"), width=w, height=h)
   eval(p)
   dev.off()
 
