@@ -134,3 +134,25 @@ pivot <- function(df, row, col, val, dense=TRUE, use.last.ij=FALSE) {
 #' @return Unique features
 #' @export
 var_names_make_unique <- function(x) { make.unique(x, sep="-") }
+
+#' Collapse a matrix into pseudobulk
+#'
+#' @param x a matrix
+#' @param u unique levels to set
+#' @return collapsed pseudobulk matrix
+#' @export
+make_pseudobulk <- function(x, u=NULL, unlevel=FALSE) {
+    if (is.factor(x)) {
+        if (unlevel) {
+            x = as.factor(as.character(x))
+        }
+        u = levels(x)
+    } else if (is.null(u)) {
+        u = unique(x)
+    }
+    u = u[!is.na(u)]
+    names(u) = u
+    return(sapply(u, function(y) {
+        1 * (x == y)
+    }))
+}
