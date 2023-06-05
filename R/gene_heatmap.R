@@ -13,9 +13,12 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
         M = M[intersect(genes, rownames(M)),]
     }
     deg = md$deg[md$deg$gene %in% rownames(M),] ## keep order
+    deg.pos = deg[deg$log2FC > 0,]
+    deg.neg = deg[deg$log2FC < 0,]
     ### reorder M based on deg literal order
     m.ord = rep(Inf, nrow(M))
-    m.ord[match(deg$gene, rownames(M))] = 1:nrow(deg)
+    m.ord[match(deg.pos$gene, rownames(M))] = 1:nrow(deg.pos)
+    m.ord[match(deg.neg$gene, rownames(M))] = 1:nrow(deg.neg)
     M = M[order(m.ord),]
     if (nrow(M) > max.ngene) {
         M = M[1:max.ngene,]
@@ -43,31 +46,43 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
                                            show_annotation_name=TRUE,
                                            annotation_name_gp= grid::gpar(fontsize = 3.5),
                                            annotation_name_side="right",
-                                           `Mean Expression`=ComplexHeatmap::anno_barplot(t(MP),
+                                           `Mean Expression`=ComplexHeatmap::anno_barplot(log1p(t(MP)),
                                                                              beside=TRUE, attach=TRUE, #baseline="min",
-                                                                                        #gp = grid::gpar(fill="#CCCCCC"), 
+                                                                                        #gp = grid::gpar(fill="#CCCCCC"),
                                                                                                 axis_param=list(gp=grid::gpar(fontsize=3), side="left"),
-                                                                                                border=FALSE, height=grid::unit(0.5, "cm")))
+                                                                             border=FALSE, height=grid::unit(0.5, "cm")))
+    ra = ComplexHeatmap::rowAnnotation(`Counts per sample`=ComplexHeatmap::anno_barplot(colSums(SummarizedExperiment::assays(se)[["counts"]]), border=FALSE, height=grid::unit(0.75, "cm"), axis_param=list(gp=grid::gpar(fontsize=3))),
+                                       annotation_name_gp= grid::gpar(fontsize = 3.5),
+                                       show_legend=FALSE,
+                                       show_annotation_name=TRUE)
+
 ### color
-    col = circlize::colorRamp2(c(min(-2, min(M, na.rm=TRUE)), 0, max(2, max(M, na.rm=TRUE))), c("blue", "white", "red"))
+    print(paste0("q:", quantile(M, c(0, 0.05, 0.1, 0.9, 0.95, 1), na.rm=TRUE)))
+    col = circlize::colorRamp2(c(-1.5, #min(-1.5, quantile(M, 0.1, na.rm=TRUE)),
+                                 0,
+                                 1.5), #max(1.5, quantile(M, 0.9, na.rm=TRUE))),
+                               c("blue", "white", "red"))
     H = autoHeatmap(M, ux=ux, dimname_fontsize=6,
                     top_annotation=ta,
-                    col=col,
+                    right_annotation=ra,
+    #                col=col,
                     row_split=cd$group,
+                    row_title_gp=grid::gpar(fontsize=8, font=2),
+                    column_title_gp=grid::gpar(fontsize=8, font=2),
                     cluster_row_slices=FALSE, sort=NULL,
                     heatmap_legend_param=list(title="Scaled gene expression",
                                               title_gp = grid::gpar(fontsize = 3.5, font = 2),
-                                              legend_gp = grid::gpar(fontsize = 5), 
+                                              legend_gp = grid::gpar(fontsize = 5),
                                               labels_gp = grid::gpar(fontsize = 5),
                                               grid_height = grid::unit(4, "mm"), grid_width = grid::unit(3, "mm")
-                                             ), 
+                                             ),
                     column_title=column_title,
                     row_title_rot = 0,
                     show_row_names=FALSE,
-                    #row_title_gp = grid::gpar(fontsize = 3, fontface = "bold"),
+                    #row_title_gp = grid::gpar(fontsize = 8, fontface = "bold"),
                     #column_title_gp = grid::gpar(fontsize = 3, fontface = "bold")
                    )
-    w = (ncol(M) + 15) * ux * 0.03937
+    w = (ncol(M) + 18) * ux * 0.03937
     h = (nrow(M) + 8) * ux * 0.03937
     attr(H, "mib_w") = w
     attr(H, "mib_h") = h

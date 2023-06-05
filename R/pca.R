@@ -1,6 +1,6 @@
 
 #' @export
-PlotPCA <- function(se, title=NULL, group="group", method="TMM", top=500, cpm.frac=0.25, cpm.cutoff=100, gene.selection="common", correct=FALSE, use_label=FALSE, force=0.2, text.size=4, max.overlaps=10) {
+PlotPCA <- function(se, title=NULL, group="group", method="TMM", top=500000, cpm.frac=0.0, cpm.cutoff=100, gene.selection="common", correct=FALSE, use_label=FALSE, force=0.2, text.size=4, max.overlaps=10) {
     require(ggplot2)
     title = ifelse(is.null(title), S4Vectors::metadata(se)$comparison, title)
     dgel = edgeR::calcNormFactors(se, method)
