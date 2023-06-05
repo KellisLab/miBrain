@@ -3,7 +3,7 @@
 #' Plot a heatmap for the following genes.
 #' SE must be sorted by group.
 #' @export
-gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group", column_title="Heatmap of genes", ux=4) {
+gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group", column_title="Heatmap of genes", ux=4, balance.deg=FALSE) {
     ### get data
     rd = SummarizedExperiment::rowData(se)
     cd = SummarizedExperiment::colData(se)
@@ -13,12 +13,16 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
         M = M[intersect(genes, rownames(M)),]
     }
     deg = md$deg[md$deg$gene %in% rownames(M),] ## keep order
-    deg.pos = deg[deg$log2FC > 0,]
-    deg.neg = deg[deg$log2FC < 0,]
-    ### reorder M based on deg literal order
     m.ord = rep(Inf, nrow(M))
-    m.ord[match(deg.pos$gene, rownames(M))] = 1:nrow(deg.pos)
-    m.ord[match(deg.neg$gene, rownames(M))] = 1:nrow(deg.neg)
+    if (balance.deg) {
+        deg.pos = deg[deg$log2FC > 0,]
+        deg.neg = deg[deg$log2FC < 0,]
+### reorder M based on deg literal order
+        m.ord[match(deg.pos$gene, rownames(M))] = 1:nrow(deg.pos)
+        m.ord[match(deg.neg$gene, rownames(M))] = 1:nrow(deg.neg)
+    } else {
+        m.ord[match(deg$gene, rownames(M))] = 1:nrow(deg)
+    }
     M = M[order(m.ord),]
     if (nrow(M) > max.ngene) {
         M = M[1:max.ngene,]
@@ -46,7 +50,7 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
                                            show_annotation_name=TRUE,
                                            annotation_name_gp= grid::gpar(fontsize = 3.5),
                                            annotation_name_side="right",
-                                           `Mean Expression`=ComplexHeatmap::anno_barplot(log1p(t(MP)),
+                                           `Mean Expression`=ComplexHeatmap::anno_barplot(log1p(t(MP))/log(10),
                                                                              beside=TRUE, attach=TRUE, #baseline="min",
                                                                                         #gp = grid::gpar(fill="#CCCCCC"),
                                                                                                 axis_param=list(gp=grid::gpar(fontsize=3), side="left"),
@@ -57,7 +61,6 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
                                        show_annotation_name=TRUE)
 
 ### color
-    print(paste0("q:", quantile(M, c(0, 0.05, 0.1, 0.9, 0.95, 1), na.rm=TRUE)))
     col = circlize::colorRamp2(c(-1.5, #min(-1.5, quantile(M, 0.1, na.rm=TRUE)),
                                  0,
                                  1.5), #max(1.5, quantile(M, 0.9, na.rm=TRUE))),
