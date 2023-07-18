@@ -43,7 +43,7 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
 ### order based on pseudobulk in #1
         M = M[,order(-MP[1,colnames(M)])]
     } else {
-        M = M[,order(deg[colnames(M),]$log2FC)]
+        M = M[,order(-deg[colnames(M),]$log2FC)]
     }
     MP = MP[,colnames(M)]
     pvalues = pvalues[colnames(M)]
