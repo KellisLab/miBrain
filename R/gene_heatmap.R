@@ -63,9 +63,9 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
                                        show_annotation_name=TRUE)
 
 ### color
-    col = circlize::colorRamp2(c(-1.5, #min(-1.5, quantile(M, 0.1, na.rm=TRUE)),
+    col = circlize::colorRamp2(c(-2, #min(-1.5, quantile(M, 0.1, na.rm=TRUE)),
                                  0,
-                                 1.5), #max(1.5, quantile(M, 0.9, na.rm=TRUE))),
+                                 2), #max(1.5, quantile(M, 0.9, na.rm=TRUE))),
                                c("blue", "white", "red"))
     H = autoHeatmap(M, ux=ux, dimname_fontsize=6,
                     top_annotation=ta,
