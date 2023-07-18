@@ -27,6 +27,8 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
     if (nrow(M) > max.ngene) {
         M = M[1:max.ngene,]
     }
+    ### after DEG subset, order by log2FC instead of average expression
+    M = M[order(deg[rownames(M),]$log2FC),]
     ### pseudobulk
     P = make_pseudobulk(cd[[group]])
     MP = vclip(M %*% P %*% diag(1/colSums(P)), min=0)
