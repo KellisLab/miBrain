@@ -27,8 +27,8 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
     if (nrow(M) > max.ngene) {
         M = M[1:max.ngene,]
     }
-    ### after DEG subset, order by log2FC instead of average expression
-    M = M[order(deg[rownames(M),]$log2FC),]
+    ## ### after DEG subset, order by log2FC instead of average expression
+    ## M = M[order(deg[rownames(M),]$log2FC),]
     ### pseudobulk
     P = make_pseudobulk(cd[[group]])
     MP = vclip(M %*% P %*% diag(1/colSums(P)), min=0)
@@ -39,8 +39,12 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
     ### set pvalues
     pvalues = setNames(rep(1, ncol(M)), colnames(M))
     pvalues[deg$gene] = deg$FDR
-    ### order based on pseudobulk in #1
-    M = M[,order(-MP[1,colnames(M)])]
+    if (FALSE) {
+### order based on pseudobulk in #1
+        M = M[,order(-MP[1,colnames(M)])]
+    } else {
+        M = M[,order(deg[rownames(M),]$log2FC)]
+    }
     MP = MP[,colnames(M)]
     pvalues = pvalues[colnames(M)]
     ### annotation
@@ -70,7 +74,7 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
     H = autoHeatmap(M, ux=ux, dimname_fontsize=6,
                     top_annotation=ta,
                     right_annotation=ra,
-    #                col=col,
+                    col=col,
                     row_split=cd$group,
                     row_title_gp=grid::gpar(fontsize=8, font=2),
                     column_title_gp=grid::gpar(fontsize=8, font=2),
@@ -87,7 +91,7 @@ gene_heatmap <- function(se, genes=NULL, max.ngene=50, assay="TMM", group="group
                     #row_title_gp = grid::gpar(fontsize = 8, fontface = "bold"),
                     #column_title_gp = grid::gpar(fontsize = 3, fontface = "bold")
                    )
-    w = (ncol(M) + 18) * ux * 0.03937
+    w = (ncol(M) + 19) * ux * 0.03937
     h = (nrow(M) + 8) * ux * 0.03937
     attr(H, "mib_w") = w
     attr(H, "mib_h") = h
