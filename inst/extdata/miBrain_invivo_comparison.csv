@@ -1,0 +1,19 @@
+comparison,case,batch,group
+Microglia,miBrain,211102Tsa,miBrain microglia
+Microglia,monoculture,211102Tsa,macrophage
+Microglia,invivo,Mathys23,Microglia
+Pericyte,miBrain,221129Tsa,miBrain pericyte
+Pericyte,monoculture,221129Tsa,pericyte
+Pericyte,invivo,Mathys23,Pericyte
+BMEC,miBrain,230105Tsa,miBrain BMEC
+BMEC,monoculture,230412Tsa,endos
+BMEC,invivo,Mathys23,Endo
+Astrocyte,miBrain,230207TsaA,miBrain astrocyte
+Astrocyte,monoculture,230207TsaA,astrocyte
+Astrocyte,invivo,Mathys23,Astrocyte
+OPC,miBrain,230308Tsa,miBrain OPC
+OPC,monoculture,230308Tsa,mono OPC
+OPC,invivo,Mathys23,OPC
+Neuron,miBrain,230428Tsa,miBrain neurons
+Neuron,monoculture,230428Tsa,neurons
+Neuron,invivo,Mathys23,Exc

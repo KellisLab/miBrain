@@ -128,6 +128,22 @@ bulk_aggregate_counts <- function(samplesheet.csv, seq.dir, star.index="/net/bmc
 }
 
 #' @export
+bulk_aggregate_multi_comparison <- function(se, comparison.csv, logTMM=FALSE) {
+    df = read.csv(comparison.csv)
+    cd = as.data.frame(SummarizedExperiment::colData(se))
+    cd$rowname = rownames(cd)
+    return(lapply(split(df, df$comparison), function(cf) {
+        mf = merge(cd[c("group", "batch", "rowname")], cf)
+        stopifnot(sum(duplicated(mf$rowname))==0)
+        rownames(mf) = mf$rowname
+        cc = se[,rownames(mf)]
+        cc$comparison = mf$comparison
+        cc$case = mf$case
+        SummarizedExperiment::metadata(cc) = list(comparison=unique(cf$comparison))
+        return(se_tmm(cc, log=logTMM))
+    }))
+}
+#' @export
 bulk_aggregate_comparison <- function(se, comparison.csv, logTMM=FALSE) {
     df = read.csv(comparison.csv)
     return(lapply(split(df, df$comparison), function(cf) {
