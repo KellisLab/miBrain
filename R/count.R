@@ -112,12 +112,12 @@ se_gene_ranges <- function(se, gtf, by="gene_name") {
 #' @param gtf GTF/GFF file to add gene_length column
 #' @return SummarizedExperiment object across all batches
 #' @export
-bulk_aggregate_counts <- function(samplesheet.csv, seq.dir, star.index="/net/bmc-lab5/data/kellis/group/Benjamin/ref/STAR_gencode43/", gtf="/net/bmc-lab5/data/kellis/group/Benjamin/ref/gencode.v43.annotation.gff3.gz") {
+bulk_aggregate_counts <- function(samplesheet.csv, seq.dir, star.index="/net/bmc-lab5/data/kellis/group/Benjamin/ref/STAR_gencode43/", gtf="/net/bmc-lab5/data/kellis/group/Benjamin/ref/gencode.v43.annotation.gff3.gz", ...) {
     df = read.csv(samplesheet.csv, row.names=1)
     df$library_id = rownames(df)
     all.se = do.call(SummarizedExperiment::cbind, lapply(split(df, df$batch), function(bf) {
         batch.dir = paste0(seq.dir, "/", bf$batch[1], "/")
-        return(bulk_aggregate_star(bf, batch.dir, index=star.index))
+        return(bulk_aggregate_star(bf, batch.dir, index=star.index, ...))
     }))
     colnames(all.se) = make.unique(all.se$title)
     if (file.exists(as.character(gtf))) {
