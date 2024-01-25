@@ -4,6 +4,18 @@ Microglia,monoculture,211102Tsa,macrophage
 Microglia,invivo,Mathys23,Microglia
 Microglia,iPSC,180531Tsa,iPSC
 Microglia,iPSC microglia,180531Tsa,iPSC microglia
+Microglia,MG0: Homeostatic,Mathys23,MG0: Homeostatic
+Microglia,MG1: Neuronal Surveillance,Mathys23,MG1: Neuronal Surveillance
+Microglia,MG2: Inflammatory I,Mathys23,MG2: Inflammatory I
+Microglia,MG3: Ribosome Biogenesis,Mathys23,MG3: Ribosome Biogenesis
+Microglia,MG4: Lipid Processing,Mathys23,MG4: Lipid Processing
+Microglia,MG5: Phagocytic,Mathys23,MG5: Phagocytic
+Microglia,MG6: Stress Signature,Mathys23,MG6: Stress Signature
+Microglia,MG7: Glycolytic,Mathys23,MG7: Glycolytic
+Microglia,MG8: Inflammatory II,Mathys23,MG8: Inflammatory II
+Microglia,MG10: Inflammatory III,Mathys23,MG10: Inflammatory III
+Microglia,MG11: Antiviral,Mathys23,MG11: Antiviral
+Microglia,MG12: Cycling,Mathys23,MG12: Cycling
 Pericyte,miBrain,221129Tsa,miBrain pericyte
 Pericyte,monoculture,221129Tsa,pericyte
 Pericyte,invivo,Mathys23,Pericyte
